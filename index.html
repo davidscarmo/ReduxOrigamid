@@ -9,14 +9,29 @@
   </head>
   <body>
     <script>
-      const initialState = 0;
+      const initialState = 10;
       const reducer = (state = initialState, action) => {
-        return state
+        if (action.type === "somar") return state + action.payload;
+        else if (action.type === "incrementar") return ++state;
+        
+        return state;
       };
 
       const store = Redux.createStore(reducer);
-      const state = store.getState();
-      console.log(state.nome);
+      let state = store.getState();
+      console.log(state);
+
+      store.dispatch({ type: "somar", payload: 25 });
+      state = store.getState();
+      console.log(state);
+
+      store.dispatch({ type: "incrementar" });
+      store.dispatch({ type: "incrementar" });
+      store.dispatch({ type: "incrementar" });
+      store.dispatch({ type: "incrementar" });
+      store.dispatch({ type: "incrementar" });
+      state = store.getState();
+      console.log(state);
     </script>
   </body>
 </html>
