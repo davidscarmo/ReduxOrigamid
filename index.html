@@ -8,12 +8,35 @@
     <script src="./redux.min.js"></script>
   </head>
   <body>
+    <div>
+      <button id="button">Incrementar</button>
+    </div>
+
     <script>
+      const INCREMENTAR = "INCREMENTAR";
+      const SOMAR = "SOMAR";
+      const REDUZIR = "REDUZIR";
+
       const initialState = 10;
+
+      const somar = (payload) => {
+        return { type: SOMAR, payload };
+      };
+
+      const incrementar = () => {
+        return {
+          type: INCREMENTAR,
+        };
+      };
+      const reduzir = () => {
+        return { type: REDUZIR };
+      };
+
       const reducer = (state = initialState, action) => {
-        if (action.type === "somar") return state + action.payload;
-        else if (action.type === "incrementar") return ++state;
-        
+        if (action.type === SOMAR) return state + action.payload;
+        else if (action.type === INCREMENTAR) return state + 1;
+        else if (action.type === REDUZIR) return state - 1;
+
         return state;
       };
 
@@ -21,17 +44,28 @@
       let state = store.getState();
       console.log(state);
 
-      store.dispatch({ type: "somar", payload: 25 });
+      store.dispatch(somar(25));
       state = store.getState();
       console.log(state);
 
-      store.dispatch({ type: "incrementar" });
-      store.dispatch({ type: "incrementar" });
-      store.dispatch({ type: "incrementar" });
-      store.dispatch({ type: "incrementar" });
-      store.dispatch({ type: "incrementar" });
+      store.dispatch(incrementar());
+      store.dispatch(incrementar());
+      store.dispatch(incrementar());
+      store.dispatch(incrementar());
+      store.dispatch(incrementar());
+
       state = store.getState();
       console.log(state);
+
+      store.dispatch(reduzir());
+      store.dispatch(reduzir());
+      store.dispatch(reduzir());
+
+      state = store.getState();
+      console.log(state);
+
+      const button = document.getElementById("button");
+      button.addEventListener("click", () => store.dispatch(incrementar()));
     </script>
   </body>
 </html>
