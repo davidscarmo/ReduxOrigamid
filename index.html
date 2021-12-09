@@ -9,6 +9,8 @@
   </head>
   <body>
     <div>
+      <h1>Total: <span id="total"></span></h1>
+
       <button id="button">Incrementar</button>
     </div>
 
@@ -16,8 +18,6 @@
       const INCREMENTAR = "INCREMENTAR";
       const SOMAR = "SOMAR";
       const REDUZIR = "REDUZIR";
-
-      const initialState = 10;
 
       const somar = (payload) => {
         return { type: SOMAR, payload };
@@ -32,6 +32,8 @@
         return { type: REDUZIR };
       };
 
+      const initialState = 0;
+
       const reducer = (state = initialState, action) => {
         if (action.type === SOMAR) return state + action.payload;
         else if (action.type === INCREMENTAR) return state + 1;
@@ -41,31 +43,24 @@
       };
 
       const store = Redux.createStore(reducer);
-      let state = store.getState();
-      console.log(state);
-
-      store.dispatch(somar(25));
-      state = store.getState();
-      console.log(state);
-
-      store.dispatch(incrementar());
-      store.dispatch(incrementar());
-      store.dispatch(incrementar());
-      store.dispatch(incrementar());
-      store.dispatch(incrementar());
-
-      state = store.getState();
-      console.log(state);
-
-      store.dispatch(reduzir());
-      store.dispatch(reduzir());
-      store.dispatch(reduzir());
-
-      state = store.getState();
-      console.log(state);
 
       const button = document.getElementById("button");
       button.addEventListener("click", () => store.dispatch(incrementar()));
+
+      const total = document.getElementById("total");
+
+
+      function render () {
+        const state = store.getState();
+        total.innerText = state;
+      }
+      render();
+
+      const subscribeOne = store.subscribe(render); // declares and starts 
+
+      // subscribeOne(); // when you call it, it stops running 
+
+
     </script>
   </body>
 </html>
