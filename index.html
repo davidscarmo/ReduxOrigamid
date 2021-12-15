@@ -8,6 +8,61 @@
     <script src="./redux.min.js"></script>
   </head>
   <body>
-    
+    <div>
+      <h1>Total: <span id="total"></span></h1>
+
+      <button id="button">Incrementar</button>
+    </div>
+
+    <script>
+      const INCREMENTAR = "INCREMENTAR";
+      const SOMAR = "SOMAR";
+      const REDUZIR = "REDUZIR";
+
+      const somar = (payload) => {
+        return { type: SOMAR, payload };
+      };
+
+      const incrementar = () => {
+        return {
+          type: INCREMENTAR,
+        };
+      };
+      const reduzir = () => {
+        return { type: REDUZIR };
+      };
+
+      const initialState = 0;
+
+      const reducer = (state = initialState, action) => {
+        switch (action.type) {
+          case SOMAR:
+            return state + action.payload;
+          case INCREMENTAR:
+            return state + 1;
+          case REDUZIR:
+            return state - 1;
+          default:
+            return state;
+        }
+      };
+
+      const store = Redux.createStore(reducer);
+
+      const button = document.getElementById("button");
+      button.addEventListener("click", () => store.dispatch(incrementar()));
+
+      const total = document.getElementById("total");
+
+      function render() {
+        const state = store.getState();
+        total.innerText = state;
+      }
+      render();
+
+      const subscribeOne = store.subscribe(render); // declares and starts
+      store.dispatch(somar(20));
+      // subscribeOne(); // when you call it, it stops running
+    </script>
   </body>
 </html>
