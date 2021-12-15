@@ -35,11 +35,16 @@
       const initialState = 0;
 
       const reducer = (state = initialState, action) => {
-        if (action.type === SOMAR) return state + action.payload;
-        else if (action.type === INCREMENTAR) return state + 1;
-        else if (action.type === REDUZIR) return state - 1;
-
-        return state;
+        switch (action.type) {
+          case SOMAR:
+            return state + action.payload;
+          case INCREMENTAR:
+            return state + 1;
+          case REDUZIR:
+            return state - 1;
+          default:
+            return state;
+        }
       };
 
       const store = Redux.createStore(reducer);
@@ -49,18 +54,15 @@
 
       const total = document.getElementById("total");
 
-
-      function render () {
+      function render() {
         const state = store.getState();
         total.innerText = state;
       }
       render();
 
-      const subscribeOne = store.subscribe(render); // declares and starts 
-
-      // subscribeOne(); // when you call it, it stops running 
-
-
+      const subscribeOne = store.subscribe(render); // declares and starts
+      store.dispatch(somar(20));
+      // subscribeOne(); // when you call it, it stops running
     </script>
   </body>
 </html>
