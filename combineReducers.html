@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./redux.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <p>Total: <span id="total"></span></p>
+      <button id="incrementButton">Incrementar</button>
+      <button id="open">Abrir</button>
+      <button id="close">Fechar</button>
+    </div>
+
+    <script>
+      const INCREMENTAR = "INCREMENTAR";
+      const SOMAR = "SOMAR";
+      const initialState = 0;
+      function contador(state = initialState, action) {
+        switch (action.type) {
+          case INCREMENTAR:
+            return state + 1;
+          case SOMAR:
+            return state + action.payload;
+          default:
+            return state;
+        }
+      }
+      function modal(state = true, action) {
+        switch (action.type) {
+          case "OPEN":
+            return true;
+          case "CLOSE":
+            return false;
+          default:
+            return state;
+        }
+      }
+      const reducer = Redux.combineReducers({ contador, modal });
+
+      const store = Redux.createStore(reducer);
+
+      const incrementButton = document.getElementById("incrementButton");
+      incrementButton.addEventListener("click", () =>
+        store.dispatch({ type: "INCREMENTAR" })
+      );
+
+      const openModalButton = document.getElementById("open");
+      openModalButton.addEventListener("click", () =>
+        store.dispatch({ type: "OPEN" })
+      );
+
+      const closeModalButton = document.getElementById("close");
+      closeModalButton.addEventListener("click", () =>
+        store.dispatch({ type: "CLOSE" })
+      );
+
+      const total = document.getElementById("total");
+
+      function render() {
+        const { contador, modal } = store.getState();
+     
+        total.innerText = contador;
+        if (modal) {
+          total.style.display = "inline-block";
+        } else {
+          total.style.display = "none";
+        }
+      }
+      render();
+
+      store.subscribe(render);
+    </script>
+  </body>
+</html>
